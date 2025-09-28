@@ -11,7 +11,7 @@ export default function AdminDashboard() {
   const fetchReports = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:8000/reports");
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/reports`);
       const data = await res.json();
       if (res.ok) {
         setReports(data);
@@ -32,11 +32,14 @@ export default function AdminDashboard() {
   // Update report status
   const updateReport = async (id, newStatus) => {
     try {
-      const res = await fetch(`http://localhost:8000/report/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/report/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: newStatus }),
+        }
+      );
       const data = await res.json();
       if (res.ok) {
         fetchReports();
@@ -52,9 +55,12 @@ export default function AdminDashboard() {
   const deleteReport = async (id) => {
     if (!confirm("Are you sure you want to delete this report?")) return;
     try {
-      const res = await fetch(`http://localhost:8000/report/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/report/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       const data = await res.json();
       if (res.ok) {
         fetchReports();
