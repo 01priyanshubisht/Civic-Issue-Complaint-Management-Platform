@@ -22,11 +22,14 @@ app.post("/report", async (req, res) => {
   // Call ML API
   let category = "Uncategorized";
   try {
-    const mlRes = await fetch("http://localhost:8001/predict", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: description }),
-    });
+    const mlRes = await fetch(
+      "https://civic-issue-complaint-management.onrender.com/predict",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: description }),
+      }
+    );
     const mlData = await mlRes.json();
     category = mlData.category || category;
   } catch (err) {
