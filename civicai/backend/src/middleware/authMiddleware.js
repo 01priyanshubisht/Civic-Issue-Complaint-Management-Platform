@@ -15,10 +15,10 @@ export const protect = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+//after conforming the token is valid we will attach the user details from db to the req.user body for further use
     const { data: user, error } = await supabase
       .from("users")
-      .select("id,name,email")
+      .select("id,name,email,role")
       .eq("id", decoded.id)
       .single();
 
@@ -34,4 +34,13 @@ export const protect = async (req, res, next) => {
       .status(401)
       .json({ message: "Not authorized, token verification failed" });
   }
+};
+
+export const authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({ message: "Forbidden: Access is denied" });
+    }
+    next();
+  };
 };

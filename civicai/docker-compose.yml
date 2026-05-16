@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  ml-service:
+    build: ./ml-service
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./ml-service/.env
+
+  backend:
+    build: ./backend
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./backend/.env
+    environment:
+      # Override ML_SERVICE_URL to point to the internal docker network instead of localhost
+      - ML_SERVICE_URL=http://ml-service:8000
+    depends_on:
+      - ml-service
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./frontend/.env
+    # Note: VITE_API_URL and VITE_SOCKET_URL in the frontend .env point to http://localhost:5001
+    # This is correct because the browser accesses the backend through the host's localhost port mapping.
+    depends_on:
+      - backend
