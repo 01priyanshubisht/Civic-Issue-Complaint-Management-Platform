@@ -17,7 +17,7 @@ from app.services import gemini_service
 router = APIRouter(prefix="/summarize", tags=["Summarization"])
 
 
-@router.post("/", response_model=SummarizeResponse)
+@router.post("", response_model=SummarizeResponse)
 async def summarize_complaint(body: SummarizeRequest):
     """
     Generate a concise 1-2 line summary and department routing suggestion.

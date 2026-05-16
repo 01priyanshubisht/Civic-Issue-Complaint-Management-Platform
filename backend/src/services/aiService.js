@@ -175,7 +175,7 @@ export async function addToEmbeddingStore(complaintId, text) {
  */
 export async function summarizeComplaint(title, description, category, location = null) {
   try {
-    const response = await mlClient.post("/summarize/", {
+    const response = await mlClient.post("/summarize", {
       title,
       description,
       category,
