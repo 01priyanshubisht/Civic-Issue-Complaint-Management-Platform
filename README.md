@@ -705,7 +705,7 @@ The `ml-service` starts first (it has no external dependencies beyond environmen
     <td align="center">
       <a href="https://github.com/01priyanshubisht">
         <img src="https://github.com/01priyanshubisht".png" width="80" style="border-radius: 50%"/><br/>
-        <sub><b>Your Name</b></sub>
+        <sub><b>Priyanshu Bisht</b></sub>
       </a><br/>
       <sub>Full-stack · ML Pipeline · DevOps</sub>
     </td>
