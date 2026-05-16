@@ -39,6 +39,15 @@ app.use("/api/complaints", complaintRoutes);
 
 const PORT = process.env.PORT || 5001;
 
+// Health Check / Welcome
+app.get("/", (req, res) => {
+  res.json({
+    message: "CivicAI Backend API is running",
+    status: "healthy",
+    docs: "/api/complaints"
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
