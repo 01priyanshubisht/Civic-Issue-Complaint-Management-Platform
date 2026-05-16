@@ -12,3 +12,21 @@ node_modules/
 # Build files
 dist/
 build/
+
+# ─── ML Service ───────────────────────────────────────────────────────────────
+# Virtual environments (use venv312 with Python 3.12)
+civicai/ml-service/venv/
+civicai/ml-service/venv312/
+
+# Trained model artifacts (binary files, regenerate via training scripts)
+civicai/ml-service/app/models/cnn_model.h5
+civicai/ml-service/app/models/cnn_model.keras
+civicai/ml-service/app/models/text_classifier.pkl
+
+# ChromaDB persistent storage (auto-generated at runtime)
+civicai/ml-service/chroma_db/
+
+# Python cache
+civicai/ml-service/**/__pycache__/
+civicai/ml-service/**/*.pyc
+civicai/ml-service/**/*.pyo
