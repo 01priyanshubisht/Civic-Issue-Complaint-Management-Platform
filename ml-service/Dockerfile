@@ -23,5 +23,9 @@ RUN python app/training/train_text_classifier.py
 
 EXPOSE 8000
 
+# Optimization: Limit memory-intensive threading for small instances
+ENV OMP_NUM_THREADS=1
+ENV MKL_NUM_THREADS=1
+
 # Bind to the PORT env var (Render default) or fallback to 8000
 CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1
