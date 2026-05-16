@@ -5,7 +5,6 @@
 
 <br/>
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
@@ -236,7 +235,6 @@ flowchart TD
 ### Frontend
 [![React](https://skillicons.dev/icons?i=react)](https://reactjs.org)
 [![Vite](https://skillicons.dev/icons?i=vite)](https://vitejs.dev)
-[![TypeScript](https://skillicons.dev/icons?i=ts)](https://www.typescriptlang.org)
 [![Tailwind](https://skillicons.dev/icons?i=tailwind)](https://tailwindcss.com)
 
 ### Backend
@@ -705,8 +703,8 @@ The `ml-service` starts first (it has no external dependencies beyond environmen
 <table>
   <tr>
     <td align="center">
-      <a href="https://github.com/your-username">
-        <img src="https://github.com/your-username.png" width="80" style="border-radius: 50%"/><br/>
+      <a href="https://github.com/01priyanshubisht">
+        <img src="https://github.com/01priyanshubisht".png" width="80" style="border-radius: 50%"/><br/>
         <sub><b>Your Name</b></sub>
       </a><br/>
       <sub>Full-stack · ML Pipeline · DevOps</sub>
