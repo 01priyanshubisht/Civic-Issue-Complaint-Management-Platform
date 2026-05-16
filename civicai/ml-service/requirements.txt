@@ -1,0 +1,31 @@
+# ─── CivicAI ML Service — Python Dependencies ────────────────────────────────
+# Python 3.12 (venv312)
+# Install: pip install -r requirements.txt
+
+# ─── FastAPI Core ─────────────────────────────────────────────────────────────
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9          # Required for multipart/form-data (image uploads)
+
+# ─── Settings & Validation ────────────────────────────────────────────────────
+pydantic>=2.7.0
+pydantic-settings>=2.3.0
+
+# ─── Roboflow Hosted Workflow Inference ───────────────────────────────────────
+# inference-sdk: official Roboflow client for hosted workflow inference
+inference-sdk>=1.2.0
+
+# ─── Text Classification ──────────────────────────────────────────────────────
+scikit-learn>=1.5.0              # TF-IDF + Logistic Regression pipeline
+joblib>=1.4.0                    # .pkl model serialization / deserialization
+
+# ─── Semantic Duplicate Detection ────────────────────────────────────────────
+sentence-transformers>=3.0.0    # all-MiniLM-L6-v2 sentence embeddings
+chromadb>=0.5.0                  # Persistent vector store (HNSW cosine search)
+
+# ─── Gemini Summarization ─────────────────────────────────────────────────────
+google-generativeai>=0.8.0
+
+# ─── Utilities ────────────────────────────────────────────────────────────────
+numpy>=1.26.0                    # Embedding vector math
+requests>=2.31.0                 # HTTP client (used by inference-sdk internally)

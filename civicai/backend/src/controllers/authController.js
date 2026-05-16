@@ -1,118 +1,105 @@
-import bcrypt from "bcryptjs";
 import supabase from "../config/supabase.js";
 import generateToken from "../utils/generateToken.js";
+import bcrypt from "bcryptjs";
 
-export const registerUser = async (req, res) => {
+export const register = async (req, res) => {
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
   try {
-    const { name, email, password } = req.body;
-
-    if (!name || !email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Name, email, and password are required" });
-    }
-
-    const { data: existingUsers, error: findError } = await supabase
+    // Check if user exists
+    const { data: existingUser } = await supabase
       .from("users")
       .select("id")
       .eq("email", email)
-      .limit(1);
-
-    if (findError) {
-      throw findError;
-    }
-
-    if (existingUsers?.length > 0) {
-      return res
-        .status(400)
-        .json({ message: "A user with that email already exists" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const { data: user, error: insertError } = await supabase
-      .from("users")
-      .insert({ name, email, password: hashedPassword })
-      .select("id,name,email")
       .single();
 
-    if (insertError) {
-      throw insertError;
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Determine role (default is user, admin if correct secret is provided)
+    let role = "user";
+    if (req.body.adminSecret)
+    {
+      if(req.body.adminSecret === process.env.ADMIN_SECRET) 
+      {
+        role = "admin";
+      }
+      else{
+        return res.status(400).json({ message: "Invalid admin secret" });
+      }
+    }
+
+
+    // Insert user
+    const { data: user, error } = await supabase
+      .from("users")
+      .insert([{ name, email, password: hashedPassword, role }])
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(400).json({ message: error.message });
     }
 
     res.status(201).json({
-      user,
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
       token: generateToken(user),
     });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "Unable to register user",
-        error: error.message || error,
-      });
+    res.status(500).json({ message: "Server error during registration" });
   }
 };
 
-export const loginUser = async (req, res) => {
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
+
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Email and password are required" });
-    }
-
-    const { data: users, error: findError } = await supabase
+    const { data: user, error } = await supabase
       .from("users")
-      .select("id,name,email,password")
+      .select("*")
       .eq("email", email)
-      .limit(1);
+      .single();
 
-    if (findError) {
-      throw findError;
-    }
-
-    const user = users?.[0];
-
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (error || !user) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const safeUser = {
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    res.json({
       id: user.id,
       name: user.name,
       email: user.email,
-    };
-
-    res.json({
-      user: safeUser,
-      token: generateToken(safeUser),
+      role: user.role,
+      token: generateToken(user),
     });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: "Unable to log in", error: error.message || error });
+    res.status(500).json({ message: "Server error during login" });
   }
 };
 
-export const getCurrentUser = async (req, res) => {
-  try {
-    if (!req.user) {
-      return res.status(401).json({ message: "Not authorized" });
-    }
-
-    res.json({ user: req.user });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "Unable to retrieve user",
-        error: error.message || error,
-      });
-  }
+export const profile = async (req, res) => {
+  res.json(req.user);
 };
